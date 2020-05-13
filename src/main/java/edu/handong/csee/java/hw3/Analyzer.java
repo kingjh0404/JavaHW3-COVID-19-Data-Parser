@@ -2,12 +2,43 @@ package edu.handong.csee.java.hw3;
 
 public class Analyzer {
 	
-	Analyzer(String[] analyzerData) {
-		
+	private String[] analyzerData;
+	private String[] columnnsOfData;
+	private String[] taskData;
+	private String[] countries;
+	private int numberCountries;
+	
+	Analyzer(String[] inputData) {
+		analyzerData = inputData;
+		countries = new String[analyzerData.length];
+		numberCountries = 0;
+		setNumberofCountries();
+	}
+	
+	public void setNumberofCountries() {
+		int i = 0; // index
+		// countries split
+		for(String task:analyzerData) {
+			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
+			countries[i] = taskData[1];
+			i++;
+		}
+		// duplication countries check
+		duplication:
+		for(int j=0; j<countries.length; j++) {
+			for(int k=0; k<j; k++) {
+				if(countries[j].equals(countries[k])) {
+					 continue duplication;
+				}
+			}
+			// System.out.println(countries[j]);
+			numberCountries++;
+		}
+		numberCountries = numberCountries - 1; // first string (Country/Region) is not country name, information of column.
 	}
 	
 	public int getNumberOfCountries() {
-		return 1;
+		return numberCountries;
 	}
 	
 	public int getNumberOfAllPatients() {
