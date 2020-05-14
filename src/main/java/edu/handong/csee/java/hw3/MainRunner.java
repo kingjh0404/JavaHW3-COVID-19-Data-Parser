@@ -277,7 +277,7 @@ public class MainRunner {
 		System.out.println("The number of countries: " + analyzer.getNumberOfCountries());
 		System.out.println("The total number of confirmed patients in the world: " + analyzer.getNumberOfAllPatients());
 		System.out.println("The total number of confirmed patients in a specified country/region: " + analyzer.getNumberOfPatientsOfACountry("Korea, South"));
-		//System.out.println("The total number of confirmed patients from a specified date: " + analyzer.getNumberOfPatientsFromASpecifiedDate("1/24/20"));
+		System.out.println("The total number of confirmed patients from a specified date: " + analyzer.getNumberOfPatientsFromASpecifiedDate("1/24/20"));
 		//System.out.println("The total number of confirmed patients before a specified date: " + analyzer.getNumberOfPatientsBeforeASpecifiedDate("1/24/20"));
 		//System.out.println("The total number of confirmed patients between two dates 1/24/20 (inclusive) and 2/7/20 (inclusive) : " + analyzer.getNumberOfPatientsBetweenTwoDates("1/24/20","2/7/20"));
 	}

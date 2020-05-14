@@ -9,6 +9,7 @@ public class Analyzer {
 	private int numberCountries;
 	private int numberAllPatient;
 	private int numberCountyPatient;
+	private int numberSpecifiedDates;
 
 	// constructor
 	Analyzer(String[] inputData) {
@@ -68,14 +69,16 @@ public class Analyzer {
 	}
 
 	public void setNumberOfPatientsOfACountry(String country) {
+		numberCountyPatient = 0;
 		int row = 0; // country index
 		for(String task : countries) {
 			task = task.replace("\"", ""); // example "Korea, South"
-			if(task.equals(country)) break;
+			if(task.equals(country)) {
+				taskData = analyzerData[row].split(",(?=([^\"]|\"[^\"]*\")*$)");
+				numberCountyPatient = numberCountyPatient + Util.convertStringToInt(taskData[taskData.length-1]);
+			}
 			row++;
 		}
-		taskData = analyzerData[row].split(",(?=([^\"]|\"[^\"]*\")*$)");
-		numberCountyPatient = Util.convertStringToInt(taskData[taskData.length-1]);
 	}
 	
 	public int getNumberOfPatientsOfACountry(String country) {
@@ -84,10 +87,24 @@ public class Analyzer {
 	}
 
 	
-	
+	public void setNumberOfPatientsFromASpecifiedDate(String fromDate) {
+		numberSpecifiedDates = 0;
+		int index = 0;
+		for(String task : columnnsOfData) {
+			if(task.equals(fromDate)) break;
+			index++;
+		}
+		for (String task : analyzerData) {
+			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
+			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
+				continue;
+			numberSpecifiedDates = numberSpecifiedDates + Util.convertStringToInt(taskData[index]) - Util.convertStringToInt(taskData[index-1]);
+		}
+	}
 	
 	public int getNumberOfPatientsFromASpecifiedDate(String fromDate) {
-		return 1;
+		setNumberOfPatientsFromASpecifiedDate(fromDate);
+		return numberSpecifiedDates;
 	}
 
 	public int getNumberOfPatientsBeforeASpecifiedDate(String specifiedDate) {
