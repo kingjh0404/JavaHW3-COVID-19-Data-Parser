@@ -9,7 +9,9 @@ public class Analyzer {
 	private int numberCountries;
 	private int numberAllPatient;
 	private int numberCountyPatient;
-	private int numberSpecifiedDates;
+	private int numberSpecifiedDate;
+	private int numberBeforeDate;
+	private int numberBetweenDate;
 
 	// constructor
 	Analyzer(String[] inputData) {
@@ -45,7 +47,8 @@ public class Analyzer {
 			// System.out.println(countries[j]);
 			numberCountries++; // not duplicate
 		}
-		numberCountries = numberCountries - 1; // first string (Country/Region) is not country name, information of column.
+		numberCountries = numberCountries - 1; // first string (Country/Region) is not country name, information of
+												// column.
 	}
 
 	public int getNumberOfCountries() {
@@ -59,7 +62,7 @@ public class Analyzer {
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
 			else
-				numberAllPatient = numberAllPatient + Util.convertStringToInt(taskData[taskData.length-1]);
+				numberAllPatient = numberAllPatient + Util.convertStringToInt(taskData[taskData.length - 1]);
 		}
 	}
 
@@ -71,48 +74,92 @@ public class Analyzer {
 	public void setNumberOfPatientsOfACountry(String country) {
 		numberCountyPatient = 0;
 		int row = 0; // country index
-		for(String task : countries) {
+		for (String task : countries) {
 			task = task.replace("\"", ""); // example "Korea, South"
-			if(task.equals(country)) {
+			if (task.equals(country)) {
 				taskData = analyzerData[row].split(",(?=([^\"]|\"[^\"]*\")*$)");
-				numberCountyPatient = numberCountyPatient + Util.convertStringToInt(taskData[taskData.length-1]);
+				numberCountyPatient = numberCountyPatient + Util.convertStringToInt(taskData[taskData.length - 1]);
 			}
 			row++;
 		}
 	}
-	
+
 	public int getNumberOfPatientsOfACountry(String country) {
 		setNumberOfPatientsOfACountry(country);
 		return numberCountyPatient;
 	}
 
-	
 	public void setNumberOfPatientsFromASpecifiedDate(String fromDate) {
-		numberSpecifiedDates = 0;
+		numberSpecifiedDate = 0;
 		int index = 0;
-		for(String task : columnnsOfData) {
-			if(task.equals(fromDate)) break;
+		for (String task : columnnsOfData) {
+			if (task.equals(fromDate))
+				break;
 			index++;
 		}
 		for (String task : analyzerData) {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			numberSpecifiedDates = numberSpecifiedDates + Util.convertStringToInt(taskData[index]) - Util.convertStringToInt(taskData[index-1]);
+			numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[index])
+					- Util.convertStringToInt(taskData[index - 1]);
 		}
 	}
-	
+
 	public int getNumberOfPatientsFromASpecifiedDate(String fromDate) {
 		setNumberOfPatientsFromASpecifiedDate(fromDate);
-		return numberSpecifiedDates;
+		return numberSpecifiedDate;
+	}
+
+	public void setNumberOfPatientsBeforeASpecifiedDate(String specifiedDate) {
+		numberBeforeDate = 0;
+		int index = 0;
+		for (String task : columnnsOfData) {
+			if (task.equals(specifiedDate))
+				break;
+			index++;
+		}
+		for (String task : analyzerData) {
+			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
+			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
+				continue;
+			numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index - 1]);
+		}
 	}
 
 	public int getNumberOfPatientsBeforeASpecifiedDate(String specifiedDate) {
-		return 1;
+		setNumberOfPatientsBeforeASpecifiedDate(specifiedDate);
+		return numberBeforeDate;
+	}
+
+	public void setNumberOfPatientsBetweenTwoDates(String date1, String date2) {
+		numberBetweenDate = 0;
+		int index1 = 0;
+		int index2 = 0;
+		for (String task : columnnsOfData) {
+			if (task.equals(date1))
+				break;
+			index1++;
+		}
+		for (String task : columnnsOfData) {
+			if (task.equals(date2))
+				break;
+			index2++;
+		}
+		for (String task : analyzerData) {
+			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
+			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
+				continue;
+			numberBetweenDate = numberBetweenDate
+					+ (Util.convertStringToInt(taskData[index1 - 1]) - Util.convertStringToInt(taskData[index1]));
+			numberBetweenDate = numberBetweenDate
+					+ (Util.convertStringToInt(taskData[index2]) - Util.convertStringToInt(taskData[index1]));
+		}
 	}
 
 	public int getNumberOfPatientsBetweenTwoDates(String date1, String date2) {
-		return 1;
+		setNumberOfPatientsBetweenTwoDates(date1, date2);
+		return numberBetweenDate;
 	}
 
 }
