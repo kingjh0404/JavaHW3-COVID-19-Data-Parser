@@ -14,8 +14,14 @@ public class Analyzer {
 	private int numberBetweenDate;
 
 	// constructor
-	Analyzer(String[] inputData) {
+	public Analyzer(String[] inputData) {
 		analyzerData = inputData;
+		numberCountries = 0;
+		numberAllPatient = 0;
+		numberCountyPatient = 0;
+		numberSpecifiedDate = 0;
+		numberBeforeDate = 0;
+		numberBetweenDate = 0;
 		setColumnnsOfData();
 	}
 
@@ -29,7 +35,6 @@ public class Analyzer {
 
 	public void setNumberofCountries() {
 		countries = new String[analyzerData.length]; // initialize, country for each row
-		numberCountries = 0; // initialize
 		int i = 0; // index
 		// countries split
 		for (String task : analyzerData) {
@@ -72,7 +77,6 @@ public class Analyzer {
 	}
 
 	public void setNumberOfPatientsOfACountry(String country) {
-		numberCountyPatient = 0;
 		int row = 0; // country index
 		for (String task : countries) {
 			task = task.replace("\"", ""); // example "Korea, South"
@@ -90,7 +94,6 @@ public class Analyzer {
 	}
 
 	public void setNumberOfPatientsFromASpecifiedDate(String fromDate) {
-		numberSpecifiedDate = 0;
 		int index = 0;
 		for (String task : columnnsOfData) {
 			if (task.equals(fromDate))
@@ -112,7 +115,6 @@ public class Analyzer {
 	}
 
 	public void setNumberOfPatientsBeforeASpecifiedDate(String specifiedDate) {
-		numberBeforeDate = 0;
 		int index = 0;
 		for (String task : columnnsOfData) {
 			if (task.equals(specifiedDate))
@@ -133,7 +135,6 @@ public class Analyzer {
 	}
 
 	public void setNumberOfPatientsBetweenTwoDates(String date1, String date2) {
-		numberBetweenDate = 0;
 		int index1 = 0;
 		int index2 = 0;
 		for (String task : columnnsOfData) {
