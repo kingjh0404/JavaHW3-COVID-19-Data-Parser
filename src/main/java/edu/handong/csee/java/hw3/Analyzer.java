@@ -15,14 +15,14 @@ public class Analyzer {
 
 	// constructor
 	public Analyzer(String[] inputData) {
-		analyzerData = inputData;
+		analyzerData = inputData; // original data sets
 		numberCountries = 0;
 		numberAllPatient = 0;
 		numberCountyPatient = 0;
 		numberSpecifiedDate = 0;
 		numberBeforeDate = 0;
 		numberBetweenDate = 0;
-		setColumnnsOfData();
+		setColumnnsOfData(); // get first row data
 	}
 
 	public void setColumnnsOfData() {
@@ -34,7 +34,7 @@ public class Analyzer {
 	}
 
 	public void setNumberofCountries() {
-		countries = new String[analyzerData.length]; // initialize, country for each row
+		countries = new String[analyzerData.length]; // initialize, Country/Region column
 		int i = 0; // index
 		// countries split
 		for (String task : analyzerData) {
@@ -63,10 +63,10 @@ public class Analyzer {
 
 	public void setNumberOfAllPatients() {
 		for (String task : analyzerData) {
-			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
+			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)"); // data split
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			else
+			else // last index is total number of confirmed patients on each county.
 				numberAllPatient = numberAllPatient + Util.convertStringToInt(taskData[taskData.length - 1]);
 		}
 	}
@@ -79,7 +79,7 @@ public class Analyzer {
 	public void setNumberOfPatientsOfACountry(String country) {
 		int row = 0; // country index
 		for (String task : countries) {
-			task = task.replace("\"", ""); // example "Korea, South"
+			task = task.replace("\"", ""); // example \"Korea, South\" -> Korea, South
 			if (task.equals(country)) {
 				taskData = analyzerData[row].split(",(?=([^\"]|\"[^\"]*\")*$)");
 				numberCountyPatient = numberCountyPatient + Util.convertStringToInt(taskData[taskData.length - 1]);
@@ -99,13 +99,17 @@ public class Analyzer {
 			if (task.equals(fromDate))
 				break;
 			index++;
-		}
+		} // index is from date columns
 		for (String task : analyzerData) {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[taskData.length - 1])
-					- Util.convertStringToInt(taskData[index - 1]);
+			if (index < 5) { // index 4 is first date
+				numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[taskData.length - 1]);
+			} else {
+				numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[taskData.length - 1])
+						- Util.convertStringToInt(taskData[index - 1]);
+			}
 		}
 	}
 
@@ -121,11 +125,16 @@ public class Analyzer {
 				break;
 			index++;
 		}
+		if (index < 5) { // index 4 is first date
+			numberBeforeDate = 0;
+			return;
+		}
 		for (String task : analyzerData) {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			if (Util.convertStringToInt(taskData[index - 1]) > Util.convertStringToInt(taskData[index])) {
+			if (Util.convertStringToInt(taskData[index - 1]) > Util.convertStringToInt(taskData[index])) { // decrease
+																											// cases
 				numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index]);
 			} else
 				numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index - 1]);
@@ -159,9 +168,8 @@ public class Analyzer {
 						+ (Util.convertStringToInt(taskData[index1]) - Util.convertStringToInt(taskData[index1 - 1]));
 				numberBetweenDate = numberBetweenDate
 						+ (Util.convertStringToInt(taskData[index2]) - Util.convertStringToInt(taskData[index1]));
-			} else
-				numberBetweenDate = Util.convertStringToInt(taskData[index2])
-						- Util.convertStringToInt(taskData[index1]);
+			} else // index 4 is first date
+				numberBetweenDate = numberBetweenDate + Util.convertStringToInt(taskData[index2]);
 		}
 	}
 
@@ -169,5 +177,5 @@ public class Analyzer {
 		setNumberOfPatientsBetweenTwoDates(date1, date2);
 		return numberBetweenDate;
 	}
-	
+
 }
