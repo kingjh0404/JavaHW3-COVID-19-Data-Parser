@@ -105,7 +105,7 @@ public class Analyzer {
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
 			numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[taskData.length - 1])
-			- Util.convertStringToInt(taskData[index - 1]);
+					- Util.convertStringToInt(taskData[index - 1]);
 		}
 	}
 
