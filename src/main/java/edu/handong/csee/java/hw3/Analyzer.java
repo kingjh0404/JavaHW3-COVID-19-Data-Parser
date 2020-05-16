@@ -125,7 +125,10 @@ public class Analyzer {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index - 1]);
+			if (Util.convertStringToInt(taskData[index - 1]) > Util.convertStringToInt(taskData[index])) {
+				numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index]);
+			} else
+				numberBeforeDate = numberBeforeDate + Util.convertStringToInt(taskData[index - 1]);
 		}
 	}
 
@@ -151,10 +154,14 @@ public class Analyzer {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			numberBetweenDate = numberBetweenDate
-					+ (Util.convertStringToInt(taskData[index1]) - Util.convertStringToInt(taskData[index1 - 1]));
-			numberBetweenDate = numberBetweenDate
-					+ (Util.convertStringToInt(taskData[index2]) - Util.convertStringToInt(taskData[index1]));
+			if (index1 > 4) {
+				numberBetweenDate = numberBetweenDate
+						+ (Util.convertStringToInt(taskData[index1]) - Util.convertStringToInt(taskData[index1 - 1]));
+				numberBetweenDate = numberBetweenDate
+						+ (Util.convertStringToInt(taskData[index2]) - Util.convertStringToInt(taskData[index1]));
+			} else
+				numberBetweenDate = Util.convertStringToInt(taskData[index2])
+						- Util.convertStringToInt(taskData[index1]);
 		}
 	}
 
