@@ -169,5 +169,5 @@ public class Analyzer {
 		setNumberOfPatientsBetweenTwoDates(date1, date2);
 		return numberBetweenDate;
 	}
-
+	
 }
