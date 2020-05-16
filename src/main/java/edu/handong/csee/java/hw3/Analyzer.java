@@ -101,8 +101,8 @@ public class Analyzer {
 			taskData = task.split(",(?=([^\"]|\"[^\"]*\")*$)");
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
-			numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[index])
-					- Util.convertStringToInt(taskData[index - 1]);
+			numberSpecifiedDate = numberSpecifiedDate + Util.convertStringToInt(taskData[taskData.length - 1])
+			- Util.convertStringToInt(taskData[index - 1]);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class Analyzer {
 			if (taskData[0].equals(getColumnnsOfData()[0])) // data information row ignore
 				continue;
 			numberBetweenDate = numberBetweenDate
-					+ (Util.convertStringToInt(taskData[index1 - 1]) - Util.convertStringToInt(taskData[index1]));
+					+ (Util.convertStringToInt(taskData[index1]) - Util.convertStringToInt(taskData[index1 - 1]));
 			numberBetweenDate = numberBetweenDate
 					+ (Util.convertStringToInt(taskData[index2]) - Util.convertStringToInt(taskData[index1]));
 		}
